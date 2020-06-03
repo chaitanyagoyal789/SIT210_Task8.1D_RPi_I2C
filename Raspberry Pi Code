@@ -1,0 +1,23 @@
+from smbus import SMBus
+
+from Tkinter import *
+import tkFont
+
+addr = 0x8 # bus address
+bus = SMBus(1) # indicates /dev/ic2-1
+win = Tk()
+win.title("LED Toggler")
+myFont = tkFont.Font(family = 'Helvetica', size = '12', weight = "bold")
+def ledOnToggle():
+	bus.write_byte(addr, 0x1) # switch it on
+def ledOffToggle():
+	bus.write_byte(addr, 0x0) # switch it on
+def close():
+        RPi.GPIO.cleanup()
+        win.destroy()
+ledOnButton = Button(win, text = 'LED Turn On', font = myFont, command = ledOnToggle,bg = 'bisque2', height = 1, width = 22)
+ledOnButton.grid(row =0, column = 3)
+ledOffButton = Button(win, text = 'LED Turn Off', font = myFont, command = ledOffToggle,bg = 'bisque2', height = 1, width = 22)
+ledOffButton.grid(row =0, column = 5)
+win.protocol("WM DELETE WINDOM", close) 
+win.mainloop()
